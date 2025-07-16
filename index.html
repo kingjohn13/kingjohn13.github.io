@@ -177,25 +177,27 @@
       e.preventDefault();
     });
 
-    document.addEventListener('mousemove', (e) => {
-      if (!isPanning) return;
+document.addEventListener('mousemove', (e) => {
+  if (!isPanning) return;
 
-      originX = e.clientX - startX;
-      originY = e.clientY - startY;
+  originX = e.clientX - startX;
+  originY = e.clientY - startY;
 
-      const container = resume;
-      const maxX = (container.offsetWidth * (scale - 1)) / 2;
-      const maxY = (container.offsetHeight * (scale - 1)) / 2;
+  const container = resume;
+  const imageWidth = resumeImage.naturalWidth * scale;
+  const imageHeight = resumeImage.naturalHeight * scale;
 
-      originX = Math.max(Math.min(originX, maxX), -maxX);
-      originY = Math.max(Math.min(originY, maxY), -maxY);
+  const containerWidth = container.offsetWidth;
+  const containerHeight = container.offsetHeight;
 
-      updateTransform();
-    });
+  const maxX = Math.max((imageWidth - containerWidth) / 2, 0);
+  const maxY = Math.max((imageHeight - containerHeight) / 2, 0);
 
-    document.addEventListener('mouseup', () => {
-      isPanning = false;
-    });
+  originX = Math.max(Math.min(originX, maxX), -maxX);
+  originY = Math.max(Math.min(originY, maxY), -maxY);
+
+  updateTransform();
+});
 
     function updateTransform() {
       resumeImage.style.transform = `scale(${scale}) translate(${originX}px, ${originY}px)`;
