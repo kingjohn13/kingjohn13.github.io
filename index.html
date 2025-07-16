@@ -164,6 +164,7 @@
     let startY = 0;
     let isDragging = false;
     let isMouseDown = false;
+    const maxPan = 500;
 
     resumeImage.addEventListener('dblclick', (e) => {
       const rect = resumeImage.getBoundingClientRect();
@@ -207,9 +208,12 @@
       originX += dx;
       originY += dy;
 
-      const maxPan = 100;
-      originX = Math.max(Math.min(originX, maxPan), -maxPan);
-      originY = Math.max(Math.min(originY, maxPan), -maxPan);
+      if (Math.abs(originX) > maxPan || Math.abs(originY) > maxPan) {
+        scale = 1;
+        originX = 0;
+        originY = 0;
+        resumeImage.style.transformOrigin = 'center center';
+      }
 
       resumeImage.style.transition = 'transform 0.1s ease-out';
       resumeImage.style.transform = `scale(${scale}) translate(${originX}px, ${originY}px)`;
