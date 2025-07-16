@@ -156,7 +156,6 @@
 
     observer.observe(resume);
 
-    // Zoom and Pan functionality
     let scale = 1;
     let isPanning = false;
     let startX = 0, startY = 0;
@@ -168,7 +167,7 @@
     });
 
     resumeImage.addEventListener('mousedown', (e) => {
-      if (e.button !== 0) return; // only left click
+      if (e.button !== 0) return;
       isPanning = true;
       startX = e.clientX - originX;
       startY = e.clientY - originY;
@@ -179,6 +178,12 @@
       if (!isPanning) return;
       originX = e.clientX - startX;
       originY = e.clientY - startY;
+
+      // Clamp pan boundaries (simple limits)
+      const maxOffset = 100;
+      originX = Math.max(Math.min(originX, maxOffset), -maxOffset);
+      originY = Math.max(Math.min(originY, maxOffset), -maxOffset);
+
       resumeImage.style.transform = `scale(${scale}) translate(${originX}px, ${originY}px)`;
     });
 
