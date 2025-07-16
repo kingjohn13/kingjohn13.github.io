@@ -45,7 +45,6 @@
       width: 100%;
       height: auto;
       border-radius: 12px;
-      cursor: zoom-in;
       transition: transform 0.3s ease;
       transform-origin: center center;
     }
@@ -161,27 +160,6 @@
       color: #888;
       font-size: 14px;
     }
-    .lightbox {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background: rgba(0, 0, 0, 0.9);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 9999;
-      display: none;
-    }
-    .lightbox img {
-      max-width: 90%;
-      max-height: 90%;
-      border-radius: 10px;
-    }
-    .lightbox.active {
-      display: flex;
-    }
     @keyframes fadeInUp {
       to {
         opacity: 1;
@@ -209,11 +187,11 @@
   </div>
 
   <div class="samples-container" id="samples">
-    <img src="sample1.png" alt="Design Sample" onclick="openLightbox(this.src)">
+    <img src="sample1.png" alt="Design Sample">
   </div>
 
   <div class="ai-container" id="ai">
-    <img src="AIsamples1.png" alt="AI Sample" onclick="openLightbox(this.src)">
+    <img src="AIsamples1.png" alt="AI Sample">
   </div>
 
   <div class="accordion-container" id="accordion">
@@ -258,11 +236,7 @@
     </a>
   </div>
 
-  <footer>Last updated: July 2025 • © 2025 King John • Designed with ❤️</footer>
-
-  <div class="lightbox" id="lightbox" onclick="closeLightbox()">
-    <img id="lightbox-img" src="" alt="Zoomed Image">
-  </div>
+  <footer>Last updated: July 2025 • © 2025 MadGrapix • Designed with ❤️</footer>
 
   <script>
     function showPage(pageId, btn) {
@@ -277,17 +251,6 @@
     function toggleAccordion(header) {
       const item = header.parentElement;
       item.classList.toggle('active');
-    }
-
-    function openLightbox(src) {
-      const lightbox = document.getElementById('lightbox');
-      const lightboxImg = document.getElementById('lightbox-img');
-      lightboxImg.src = src;
-      lightbox.classList.add('active');
-    }
-
-    function closeLightbox() {
-      document.getElementById('lightbox').classList.remove('active');
     }
   </script>
 </body>
