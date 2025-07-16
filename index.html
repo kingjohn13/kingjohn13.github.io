@@ -142,7 +142,7 @@
     </a>
   </div>
 
-  <footer>Last updated: July 2025 • © 2025 King John • Designed with ❤️</footer>
+  <footer>Last updated: July 2025 • © 2025 MadGrapix • Designed with ❤️</footer>
 
   <script>
     const resume = document.getElementById('resume');
@@ -187,7 +187,7 @@
     });
 
     resumeImage.addEventListener('mousedown', (e) => {
-      if (scale === 1) return;
+      if (scale === 1 || e.button !== 0) return;
       isDragging = true;
       startX = e.clientX;
       startY = e.clientY;
@@ -206,7 +206,6 @@
       originX += dx;
       originY += dy;
 
-      // Limit max pan to prevent too far dragging (100px buffer)
       const maxPan = 100;
       originX = Math.max(Math.min(originX, maxPan), -maxPan);
       originY = Math.max(Math.min(originY, maxPan), -maxPan);
