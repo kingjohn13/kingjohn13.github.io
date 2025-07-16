@@ -5,21 +5,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Rickel John Rensulat - Graphic Design Resume</title>
   <link rel="icon" type="image/png" href="favicon.png">
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@600&display=swap" rel="stylesheet">
   <style>
     body {
       background-color: #121212;
       color: #ffffff;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-family: 'Open Sans', sans-serif;
       text-align: center;
       margin: 0;
       padding: 40px 20px;
     }
     .about {
-      max-width: 600px;
+      max-width: 700px;
       margin: 0 auto 30px;
-      font-size: 16px;
-      line-height: 1.6;
+      font-size: 20px;
+      line-height: 1.7;
       color: #ccc;
+      font-weight: 600;
     }
     img {
       max-width: 90%;
@@ -32,16 +34,17 @@
       display: inline-block;
       margin: 20px 10px;
       padding: 10px 20px;
-      border-radius: 6px;
+      border-radius: 10px;
       background-color: #0a84ff;
       color: white;
       font-weight: bold;
       text-decoration: none;
       border: none;
-      transition: background 0.3s ease;
+      transition: background-color 0.3s ease, transform 0.3s ease;
     }
     .download-btn:hover {
       background-color: #005fcc;
+      transform: scale(1.05);
     }
     .social-links {
       margin-top: 30px;
@@ -50,7 +53,7 @@
       display: inline-block;
       margin: 10px;
       padding: 10px;
-      border-radius: 50%;
+      border-radius: 10px;
       background-color: #1e1e1e;
       color: #fff;
       text-decoration: none;
@@ -58,15 +61,20 @@
       height: 50px;
       line-height: 30px;
       border: 1px solid #555;
-      transition: background-color 0.3s ease;
+      transition: background-color 0.3s ease, transform 0.3s ease;
     }
     .social-links a:hover {
       background-color: #333;
+      transform: scale(1.1);
     }
     .social-links img {
       width: 24px;
       height: 24px;
       vertical-align: middle;
+      transition: transform 0.3s ease;
+    }
+    .social-links a:hover img {
+      transform: scale(1.2);
     }
     footer {
       margin-top: 40px;
