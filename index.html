@@ -25,7 +25,7 @@
     }
     .resume-container {
       display: inline-block;
-      width: 210mm; /* A4 width */
+      width: 210mm;
       max-width: 100%;
       box-shadow: 0 0 20px rgba(255,255,255,0.08);
       border-radius: 12px;
@@ -46,6 +46,7 @@
       border-radius: 12px;
       cursor: grab;
       transition: transform 0.3s ease;
+      transform-origin: center center;
     }
     .download-container {
       display: flex;
@@ -163,7 +164,9 @@
 
     resumeImage.addEventListener('dblclick', () => {
       scale = scale === 1 ? 2 : 1;
-      resumeImage.style.transform = `scale(${scale}) translate(${originX}px, ${originY}px)`;
+      originX = 0;
+      originY = 0;
+      updateTransform();
     });
 
     resumeImage.addEventListener('mousedown', (e) => {
@@ -176,20 +179,28 @@
 
     document.addEventListener('mousemove', (e) => {
       if (!isPanning) return;
+      const containerRect = resume.getBoundingClientRect();
+      const imageRect = resumeImage.getBoundingClientRect();
+
       originX = e.clientX - startX;
       originY = e.clientY - startY;
 
-      // Clamp pan boundaries (simple limits)
-      const maxOffset = 100;
-      originX = Math.max(Math.min(originX, maxOffset), -maxOffset);
-      originY = Math.max(Math.min(originY, maxOffset), -maxOffset);
+      const maxX = (imageRect.width * scale - containerRect.width) / 2;
+      const maxY = (imageRect.height * scale - containerRect.height) / 2;
 
-      resumeImage.style.transform = `scale(${scale}) translate(${originX}px, ${originY}px)`;
+      originX = Math.max(Math.min(originX, maxX), -maxX);
+      originY = Math.max(Math.min(originY, maxY), -maxY);
+
+      updateTransform();
     });
 
     document.addEventListener('mouseup', () => {
       isPanning = false;
     });
+
+    function updateTransform() {
+      resumeImage.style.transform = `scale(${scale}) translate(${originX}px, ${originY}px)`;
+    }
   </script>
 </body>
 </html>
