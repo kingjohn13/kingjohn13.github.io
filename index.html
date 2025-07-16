@@ -40,6 +40,8 @@
       width: 100%;
       height: auto;
       border-radius: 12px;
+      transition: transform 0.3s ease;
+      transform-origin: center center;
     }
     .navigation {
       display: flex;
@@ -110,6 +112,25 @@
       font-size: 14px;
       color: #aaa;
     }
+    .arrow-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0, 0, 0, 0.5);
+      border: none;
+      color: white;
+      font-size: 24px;
+      cursor: pointer;
+      padding: 10px;
+      border-radius: 50%;
+      z-index: 1;
+    }
+    .arrow-left {
+      left: 10px;
+    }
+    .arrow-right {
+      right: 10px;
+    }
     footer {
       margin-top: 40px;
       color: #888;
@@ -140,11 +161,13 @@
   </div>
 
   <div class="resume-container visible" id="resume">
-    <img src="resume.png" alt="Resume">
+    <img src="resume.png" alt="Resume" id="resumeImage">
   </div>
 
   <div class="samples-container" id="samples">
-    <img src="samples.png" alt="Design Samples">
+    <button class="arrow-btn arrow-left" onclick="prevSample()">←</button>
+    <img src="sample1.png" alt="Design Sample" id="sampleImage">
+    <button class="arrow-btn arrow-right" onclick="nextSample()">→</button>
   </div>
 
   <div class="download-container">
@@ -169,14 +192,48 @@
   <footer>Last updated: July 2025 • © 2025 King John • Designed with ❤️</footer>
 
   <script>
-    function showPage(pageId) {
-      const resume = document.getElementById('resume');
-      const samples = document.getElementById('samples');
+    const resume = document.getElementById('resume');
+    const samples = document.getElementById('samples');
+    const resumeImage = document.getElementById('resumeImage');
+    const sampleImage = document.getElementById('sampleImage');
 
+    let currentSample = 1;
+    const totalSamples = 10;
+
+    function showPage(pageId) {
       resume.classList.remove('visible');
       samples.classList.remove('visible');
-
       document.getElementById(pageId).classList.add('visible');
+    }
+
+    resumeImage.addEventListener('dblclick', (e) => {
+      const rect = resumeImage.getBoundingClientRect();
+      const offsetX = e.clientX - rect.left;
+      const offsetY = e.clientY - rect.top;
+      const percentX = offsetX / rect.width;
+      const percentY = offsetY / rect.height;
+
+      if (resumeImage.style.transform.includes('scale(2)')) {
+        resumeImage.style.transform = 'scale(1)';
+        resumeImage.style.transformOrigin = 'center center';
+      } else {
+        resumeImage.style.transformOrigin = `${percentX * 100}% ${percentY * 100}%`;
+        resumeImage.style.transform = 'scale(2)';
+      }
+    });
+
+    function nextSample() {
+      if (currentSample < totalSamples) {
+        currentSample++;
+        sampleImage.src = `sample${currentSample}.png`;
+      }
+    }
+
+    function prevSample() {
+      if (currentSample > 1) {
+        currentSample--;
+        sampleImage.src = `sample${currentSample}.png`;
+      }
     }
   </script>
 </body>
