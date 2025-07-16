@@ -142,7 +142,7 @@
     </a>
   </div>
 
-  <footer>Last updated: July 2025 • © 2025 MadGrapix • Designed with ❤️</footer>
+  <footer>Last updated: July 2025 • © 2025 King John • Designed with ❤️</footer>
 
   <script>
     const resume = document.getElementById('resume');
@@ -163,6 +163,7 @@
     let startX = 0;
     let startY = 0;
     let isDragging = false;
+    let isMouseDown = false;
 
     resumeImage.addEventListener('dblclick', (e) => {
       const rect = resumeImage.getBoundingClientRect();
@@ -188,15 +189,15 @@
 
     resumeImage.addEventListener('mousedown', (e) => {
       if (scale === 1 || e.button !== 0) return;
-      isDragging = true;
+      isMouseDown = true;
       startX = e.clientX;
       startY = e.clientY;
       resumeImage.style.cursor = 'grabbing';
     });
 
-    document.addEventListener('mousemove', (e) => {
-      if (!isDragging || scale === 1) return;
-
+    resumeImage.addEventListener('mousemove', (e) => {
+      if (!isMouseDown || scale === 1) return;
+      isDragging = true;
       const dx = e.clientX - startX;
       const dy = e.clientY - startY;
 
@@ -214,7 +215,8 @@
     });
 
     document.addEventListener('mouseup', () => {
-      if (isDragging) {
+      if (isMouseDown) {
+        isMouseDown = false;
         isDragging = false;
         resumeImage.style.cursor = 'grab';
       }
