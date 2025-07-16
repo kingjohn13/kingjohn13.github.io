@@ -164,14 +164,15 @@
 
     resumeImage.addEventListener('dblclick', () => {
       scale = scale === 1 ? 2 : 1;
-      resumeImage.style.transform = `scale(${scale})`;
+      resumeImage.style.transform = `scale(${scale}) translate(${originX}px, ${originY}px)`;
     });
 
-    resumeImage.addEventListener('contextmenu', (e) => {
-      e.preventDefault();
+    resumeImage.addEventListener('mousedown', (e) => {
+      if (e.button !== 0) return; // only left click
       isPanning = true;
       startX = e.clientX - originX;
       startY = e.clientY - originY;
+      e.preventDefault();
     });
 
     document.addEventListener('mousemove', (e) => {
