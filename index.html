@@ -44,7 +44,7 @@
       width: 100%;
       height: auto;
       border-radius: 12px;
-      cursor: grab;
+      cursor: zoom-in;
       transition: transform 0.3s ease;
       transform-origin: center center;
     }
@@ -154,54 +154,23 @@
         }
       });
     }, { threshold: 0.5 });
-
     observer.observe(resume);
 
-    let scale = 1;
-    let isPanning = false;
-    let startX = 0, startY = 0;
-    let originX = 0, originY = 0;
+    resumeImage.addEventListener('dblclick', (e) => {
+      const rect = resumeImage.getBoundingClientRect();
+      const offsetX = e.clientX - rect.left;
+      const offsetY = e.clientY - rect.top;
+      const percentX = offsetX / rect.width;
+      const percentY = offsetY / rect.height;
 
-    resumeImage.addEventListener('dblclick', () => {
-      scale = scale === 1 ? 2 : 1;
-      originX = 0;
-      originY = 0;
-      updateTransform();
+      if (resumeImage.style.transform.includes('scale(2)')) {
+        resumeImage.style.transform = 'scale(1)';
+        resumeImage.style.transformOrigin = 'center center';
+      } else {
+        resumeImage.style.transformOrigin = `${percentX * 100}% ${percentY * 100}%`;
+        resumeImage.style.transform = 'scale(2)';
+      }
     });
-
-    resumeImage.addEventListener('mousedown', (e) => {
-      if (e.button !== 0) return;
-      isPanning = true;
-      startX = e.clientX - originX;
-      startY = e.clientY - originY;
-      e.preventDefault();
-    });
-
-document.addEventListener('mousemove', (e) => {
-  if (!isPanning) return;
-
-  originX = e.clientX - startX;
-  originY = e.clientY - startY;
-
-  const container = resume;
-  const imageWidth = resumeImage.naturalWidth * scale;
-  const imageHeight = resumeImage.naturalHeight * scale;
-
-  const containerWidth = container.offsetWidth;
-  const containerHeight = container.offsetHeight;
-
-  const maxX = Math.max((imageWidth - containerWidth) / 2, 0);
-  const maxY = Math.max((imageHeight - containerHeight) / 2, 0);
-
-  originX = Math.max(Math.min(originX, maxX), -maxX);
-  originY = Math.max(Math.min(originY, maxY), -maxY);
-
-  updateTransform();
-});
-
-    function updateTransform() {
-      resumeImage.style.transform = `scale(${scale}) translate(${originX}px, ${originY}px)`;
-    }
   </script>
 </body>
 </html>
