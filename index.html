@@ -158,6 +158,34 @@
         transform: translateY(0);
       }
     }
+
+    /* Accordion Styles */
+    .accordion-btn {
+      background-color: #1e1e1e;
+      color: #fff;
+      cursor: pointer;
+      padding: 14px 20px;
+      width: 100%;
+      text-align: left;
+      border: none;
+      outline: none;
+      font-size: 18px;
+      font-weight: bold;
+      border-bottom: 1px solid #333;
+      transition: background-color 0.3s ease;
+    }
+    .accordion-btn:hover {
+      background-color: #333;
+    }
+    .accordion-panel {
+      padding: 0 20px 20px;
+      display: none;
+      background-color: #1a1a1a;
+      color: #ccc;
+    }
+    .accordion-btn.active + .accordion-panel {
+      display: block;
+    }
   </style>
 </head>
 <body>
@@ -171,6 +199,7 @@
     <button class="nav-btn active" onclick="showPage('resume', this)">Resume</button>
     <button class="nav-btn" onclick="showPage('samples', this)">Custom Designs</button>
     <button class="nav-btn" onclick="showPage('ai', this)">AI Generated Designs</button>
+    <button class="nav-btn" onclick="showPage('expanded', this)">Expanded Resume</button>
   </div>
 
   <div class="resume-container visible" id="resume">
@@ -189,6 +218,30 @@
     <button class="arrow-btn arrow-right" onclick="nextAISample()">❯</button>
   </div>
 
+  <div class="resume-container" id="expanded">
+    <div class="accordion">
+      <button class="accordion-btn">Education</button>
+      <div class="accordion-panel">
+        <p>Bachelor of Arts in Graphic Design – ABC University (2012–2016)</p>
+      </div>
+
+      <button class="accordion-btn">Work Experience</button>
+      <div class="accordion-panel">
+        <p>Remote Graphic Designer – European Clients (2017–Present)<br>Specialized in apparel, branding, and marketing visuals.</p>
+      </div>
+
+      <button class="accordion-btn">Skills</button>
+      <div class="accordion-panel">
+        <p>Adobe Photoshop, Illustrator, InDesign, MidJourney, Ideogram, Typography, Branding</p>
+      </div>
+
+      <button class="accordion-btn">Tools & Platforms</button>
+      <div class="accordion-panel">
+        <p>Figma, Canva, Upwork, Trello, Slack, Google Workspace</p>
+      </div>
+    </div>
+  </div>
+
   <div class="download-container">
     <a href="resume.pdf" download class="download-btn">Download Resume (PDF)</a>
   </div>
@@ -203,7 +256,7 @@
       <span class="social-label">LinkedIn</span>
     </a>
     <a href="mailto:renwrite1@gmail.com" class="social-link">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Gmail_Icon.png" alt="Email">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/7/7e/Email_Icon_%282014%29.svg" alt="Email">
       <span class="social-label">Email</span>
     </a>
   </div>
@@ -214,6 +267,7 @@
     const resume = document.getElementById('resume');
     const samples = document.getElementById('samples');
     const ai = document.getElementById('ai');
+    const expanded = document.getElementById('expanded');
     const resumeImage = document.getElementById('resumeImage');
     const sampleImage = document.getElementById('sampleImage');
     const aiSampleImage = document.getElementById('aiSampleImage');
@@ -224,9 +278,8 @@
     const totalAISamples = 10;
 
     function showPage(pageId, btn) {
-      resume.classList.remove('visible');
-      samples.classList.remove('visible');
-      ai.classList.remove('visible');
+      const sections = ['resume', 'samples', 'ai', 'expanded'];
+      sections.forEach(id => document.getElementById(id).classList.remove('visible'));
       document.getElementById(pageId).classList.add('visible');
 
       document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
@@ -273,6 +326,15 @@
         aiSampleImage.src = `AIsamples${currentAISample}.png`;
       }
     }
+
+    // Accordion behavior
+    document.querySelectorAll('.accordion-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        btn.classList.toggle('active');
+        const panel = btn.nextElementSibling;
+        panel.style.display = panel.style.display === 'block' ? 'none' : 'block';
+      });
+    });
   </script>
 </body>
 </html>
