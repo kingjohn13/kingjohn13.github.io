@@ -178,14 +178,18 @@
       background-color: #333;
     }
     .accordion-panel {
-      padding: 0 20px 20px;
-      display: none;
-      background-color: #1a1a1a;
-      color: #ccc;
-    }
-    .accordion-btn.active + .accordion-panel {
-      display: block;
-    }
+  max-height: 0;
+  overflow: hidden;
+  background-color: #1a1a1a;
+  color: #ccc;
+  text-align: left;
+  padding: 0 20px;
+  transition: max-height 0.4s ease, padding 0.4s ease;
+}
+.accordion-btn.active + .accordion-panel {
+  max-height: 300px; /* Enough for content, adjust if needed */
+  padding: 20px;
+}
   </style>
 </head>
 <body>
@@ -330,13 +334,32 @@
     }
 
     // Accordion behavior
-    document.querySelectorAll('.accordion-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        btn.classList.toggle('active');
-        const panel = btn.nextElementSibling;
-        panel.style.display = panel.style.display === 'block' ? 'none' : 'block';
-      });
+    const accordionButtons = document.querySelectorAll('.accordion-btn');
+
+accordionButtons.forEach(btn => {
+  btn.addEventListener('click', () => {
+    accordionButtons.forEach(otherBtn => {
+      if (otherBtn !== btn) {
+        otherBtn.classList.remove('active');
+        otherBtn.nextElementSibling.style.maxHeight = null;
+        otherBtn.nextElementSibling.style.padding = "0 20px";
+      }
     });
+
+    const panel = btn.nextElementSibling;
+    const isActive = btn.classList.contains('active');
+    btn.classList.toggle('active');
+
+    if (isActive) {
+      panel.style.maxHeight = null;
+      panel.style.padding = "0 20px";
+    } else {
+      panel.style.maxHeight = panel.scrollHeight + "px";
+      panel.style.padding = "20px";
+    }
+  });
+});
+
   </script>
 </body>
 </html>
