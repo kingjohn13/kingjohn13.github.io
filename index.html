@@ -32,10 +32,14 @@
       margin: 20px auto;
       overflow: hidden;
       position: relative;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
     }
     .resume-container.visible, .samples-container.visible, .ai-container.visible {
       display: inline-block;
-      animation: fadeIn 0.6s ease both;
+      opacity: 1;
+      transform: translateY(0);
     }
     .resume-container img, .samples-container img, .ai-container img {
       width: 100%;
@@ -59,10 +63,14 @@
       border-radius: 8px;
       cursor: pointer;
       font-size: 16px;
-      transition: background-color 0.3s ease;
+      transition: background-color 0.3s ease, transform 0.2s ease;
     }
     .nav-btn:hover {
       background-color: #555;
+      transform: scale(1.05);
+    }
+    .nav-btn.active {
+      background-color: #0a84ff;
     }
     .download-container {
       display: flex;
@@ -118,16 +126,21 @@
       position: absolute;
       top: 50%;
       transform: translateY(-50%);
-      background: rgba(255, 255, 255, 0.1);
-      border: 2px solid #fff;
+      background: #0a84ff;
+      border: none;
       color: white;
-      font-size: 32px;
+      font-size: 28px;
       font-weight: bold;
       cursor: pointer;
-      padding: 12px 18px;
-      border-radius: 50%;
+      padding: 12px 16px;
+      border-radius: 10px;
       z-index: 1;
-      backdrop-filter: blur(6px);
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+      transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+    .arrow-btn:hover {
+      background-color: #005fcc;
+      transform: scale(1.1);
     }
     .arrow-left {
       left: 10px;
@@ -146,10 +159,6 @@
         transform: translateY(0);
       }
     }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
   </style>
 </head>
 <body>
@@ -160,9 +169,9 @@
   </div>
 
   <div class="navigation">
-    <button class="nav-btn" onclick="showPage('resume')">Resume</button>
-    <button class="nav-btn" onclick="showPage('samples')">Custom Designs</button>
-    <button class="nav-btn" onclick="showPage('ai')">AI Generated Designs</button>
+    <button class="nav-btn active" onclick="showPage('resume', this)">Resume</button>
+    <button class="nav-btn" onclick="showPage('samples', this)">Custom Designs</button>
+    <button class="nav-btn" onclick="showPage('ai', this)">AI Generated Designs</button>
   </div>
 
   <div class="resume-container visible" id="resume">
@@ -170,15 +179,15 @@
   </div>
 
   <div class="samples-container" id="samples">
-    <button class="arrow-btn arrow-left" onclick="prevSample()">←</button>
+    <button class="arrow-btn arrow-left" onclick="prevSample()">❮</button>
     <img src="sample1.png" alt="Design Sample" id="sampleImage">
-    <button class="arrow-btn arrow-right" onclick="nextSample()">→</button>
+    <button class="arrow-btn arrow-right" onclick="nextSample()">❯</button>
   </div>
 
   <div class="ai-container" id="ai">
-    <button class="arrow-btn arrow-left" onclick="prevAISample()">←</button>
+    <button class="arrow-btn arrow-left" onclick="prevAISample()">❮</button>
     <img src="AIsamples1.png" alt="AI Sample" id="aiSampleImage">
-    <button class="arrow-btn arrow-right" onclick="nextAISample()">→</button>
+    <button class="arrow-btn arrow-right" onclick="nextAISample()">❯</button>
   </div>
 
   <div class="download-container">
@@ -195,7 +204,7 @@
       <span class="social-label">LinkedIn</span>
     </a>
     <a href="mailto:renwrite1@gmail.com" class="social-link">
-      <img src="https://upload.wikedia.org/wikipedia/commons/4/4e/Gmail_Icon.png" alt="Email">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/8/8f/Envelope_font_awesome.svg" alt="Email">
       <span class="social-label">Email</span>
     </a>
   </div>
@@ -212,15 +221,18 @@
 
     let currentSample = 1;
     const totalSamples = 10;
-
     let currentAISample = 1;
     const totalAISamples = 10;
 
-    function showPage(pageId) {
+    function showPage(pageId, btn) {
       resume.classList.remove('visible');
       samples.classList.remove('visible');
       ai.classList.remove('visible');
+
       document.getElementById(pageId).classList.add('visible');
+
+      document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
     }
 
     resumeImage.addEventListener('dblclick', (e) => {
@@ -245,21 +257,18 @@
         sampleImage.src = `sample${currentSample}.png`;
       }
     }
-
     function prevSample() {
       if (currentSample > 1) {
         currentSample--;
         sampleImage.src = `sample${currentSample}.png`;
       }
     }
-
     function nextAISample() {
       if (currentAISample < totalAISamples) {
         currentAISample++;
         aiSampleImage.src = `AIsamples${currentAISample}.png`;
       }
     }
-
     function prevAISample() {
       if (currentAISample > 1) {
         currentAISample--;
