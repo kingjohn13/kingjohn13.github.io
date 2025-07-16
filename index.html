@@ -23,7 +23,7 @@
       color: #ccc;
       font-weight: 600;
     }
-    .resume-container {
+    .resume-container, .samples-container {
       display: inline-block;
       width: 210mm;
       max-width: 100%;
@@ -36,18 +36,16 @@
       overflow: hidden;
       position: relative;
     }
-    .resume-container.visible {
+    .resume-container.visible, .samples-container.visible {
       opacity: 1;
       transform: translateY(0);
     }
-    .resume-container img {
+    .resume-container img, .samples-container img {
       width: 100%;
       height: auto;
       border-radius: 12px;
-      cursor: grab;
       transition: transform 0.3s ease;
       transform-origin: center center;
-      will-change: transform;
     }
     .download-container {
       display: flex;
@@ -105,19 +103,6 @@
         transform: translateY(0);
       }
     }
-    .hint {
-      position: fixed;
-      top: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: #ff4444;
-      color: #fff;
-      padding: 8px 16px;
-      border-radius: 6px;
-      font-size: 14px;
-      display: none;
-      z-index: 999;
-    }
     footer {
       margin-top: 40px;
       color: #888;
@@ -133,7 +118,11 @@
   </div>
 
   <div class="resume-container" id="resume">
-    <img src="resume.png" alt="Resume" id="resumeImage">
+    <img src="resume.png" alt="Resume">
+  </div>
+
+  <div class="samples-container" id="samples">
+    <img src="samples.png" alt="Design Samples">
   </div>
 
   <div class="download-container">
@@ -155,97 +144,22 @@
     </a>
   </div>
 
-  <div class="hint" id="hint">Boundary reached! Zooming out...</div>
-
   <footer>Last updated: July 2025 • © 2025 King John • Designed with ❤️</footer>
 
   <script>
     const resume = document.getElementById('resume');
-    const resumeImage = document.getElementById('resumeImage');
-    const hint = document.getElementById('hint');
+    const samples = document.getElementById('samples');
 
     const observer = new IntersectionObserver(entries => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
-          resume.classList.add('visible');
+          entry.target.classList.add('visible');
         }
       });
     }, { threshold: 0.5 });
+
     observer.observe(resume);
-
-    let scale = 1;
-    let originX = 0;
-    let originY = 0;
-    let startX = 0;
-    let startY = 0;
-    let isMouseDown = false;
-    const maxPan = 300;
-
-    resumeImage.addEventListener('dblclick', (e) => {
-      const rect = resumeImage.getBoundingClientRect();
-      const offsetX = e.clientX - rect.left;
-      const offsetY = e.clientY - rect.top;
-      const percentX = offsetX / rect.width;
-      const percentY = offsetY / rect.height;
-
-      if (scale === 2) {
-        scale = 1;
-        originX = 0;
-        originY = 0;
-        resumeImage.style.transformOrigin = 'center center';
-      } else {
-        scale = 2;
-        originX = (0.5 - percentX) * 50;
-        originY = (0.5 - percentY) * 50;
-        resumeImage.style.transformOrigin = `${percentX * 100}% ${percentY * 100}%`;
-      }
-
-      resumeImage.style.transition = 'transform 0.3s ease';
-      resumeImage.style.transform = `scale(${scale}) translate(${originX}px, ${originY}px)`;
-    });
-
-    resumeImage.addEventListener('mousedown', (e) => {
-      if (scale === 1 || e.button !== 0) return;
-      isMouseDown = true;
-      startX = e.clientX;
-      startY = e.clientY;
-      resumeImage.style.cursor = 'grabbing';
-    });
-
-    resumeImage.addEventListener('mousemove', (e) => {
-      if (!isMouseDown || scale === 1) return;
-      const dx = e.clientX - startX;
-      const dy = e.clientY - startY;
-
-      startX = e.clientX;
-      startY = e.clientY;
-
-      originX += dx;
-      originY += dy;
-
-      if (Math.abs(originX) > maxPan || Math.abs(originY) > maxPan) {
-        scale = 1;
-        originX = 0;
-        originY = 0;
-        resumeImage.style.transformOrigin = 'center center';
-        showHint();
-      }
-
-      resumeImage.style.transition = 'transform 0.3s ease';
-      resumeImage.style.transform = `scale(${scale}) translate(${originX}px, ${originY}px)`;
-    });
-
-    document.addEventListener('mouseup', () => {
-      isMouseDown = false;
-      resumeImage.style.cursor = 'grab';
-    });
-
-    function showHint() {
-      hint.style.display = 'block';
-      setTimeout(() => {
-        hint.style.display = 'none';
-      }, 1500);
-    }
+    observer.observe(samples);
   </script>
 </body>
 </html>
