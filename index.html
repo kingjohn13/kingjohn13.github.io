@@ -45,6 +45,7 @@
       width: 100%;
       height: auto;
       border-radius: 12px;
+      cursor: zoom-in;
       transition: transform 0.3s ease;
       transform-origin: center center;
     }
@@ -160,6 +161,27 @@
       color: #888;
       font-size: 14px;
     }
+    .lightbox {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.9);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      display: none;
+    }
+    .lightbox img {
+      max-width: 90%;
+      max-height: 90%;
+      border-radius: 10px;
+    }
+    .lightbox.active {
+      display: flex;
+    }
     @keyframes fadeInUp {
       to {
         opacity: 1;
@@ -183,15 +205,15 @@
   </div>
 
   <div class="resume-container visible" id="resume">
-    <img src="resume.png" alt="Resume" id="resumeImage">
+    <img src="resume.png" alt="Resume">
   </div>
 
   <div class="samples-container" id="samples">
-    <img src="sample1.png" alt="Design Sample">
+    <img src="sample1.png" alt="Design Sample" onclick="openLightbox(this.src)">
   </div>
 
   <div class="ai-container" id="ai">
-    <img src="AIsamples1.png" alt="AI Sample">
+    <img src="AIsamples1.png" alt="AI Sample" onclick="openLightbox(this.src)">
   </div>
 
   <div class="accordion-container" id="accordion">
@@ -205,17 +227,13 @@
       <div class="accordion-item">
         <button class="accordion-header" onclick="toggleAccordion(this)">Skills</button>
         <div class="accordion-content">
-          <p>I am an expert in Adobe Photoshop and Illustrator, using them daily for creating detailed, production-ready graphics. My workflow includes everything from vector illustrations to complex photo manipulations and apparel mockups. I’m also proficient in AI-powered design tools such as Midjourney, DALL·E, and Ideogram, which I use to enhance creativity and speed up concept generation. My strong grasp of typography and layout design ensures every project is visually balanced and brand-consistent. Whether it’s print or digital, I bring a polished, modern aesthetic to all of my work.
-
-</p>
+          <p>I am an expert in Adobe Photoshop and Illustrator, using them daily for creating detailed, production-ready graphics. My workflow includes everything from vector illustrations to complex photo manipulations and apparel mockups. I’m also proficient in AI-powered design tools such as Midjourney, DALL·E, and Ideogram, which I use to enhance creativity and speed up concept generation. My strong grasp of typography and layout design ensures every project is visually balanced and brand-consistent. Whether it’s print or digital, I bring a polished, modern aesthetic to all of my work.</p>
         </div>
       </div>
       <div class="accordion-item">
         <button class="accordion-header" onclick="toggleAccordion(this)">Education</button>
         <div class="accordion-content">
-          <p>I hold a Bachelor's Degree in Electronics Engineering, which has equipped me with strong problem-solving skills and technical precision. My transition into graphic design was driven by passion and a deep appreciation for visual storytelling. I have completed numerous seminars and training programs focused on design fundamentals, branding, and digital illustration. These experiences have helped me develop a professional-level skill set in layout, composition, and visual communication. I continually invest in learning to stay current with design trends and tools.
-
-</p>
+          <p>I hold a Bachelor's Degree in Electronics Engineering, which has equipped me with strong problem-solving skills and technical precision. My transition into graphic design was driven by passion and a deep appreciation for visual storytelling. I have completed numerous seminars and training programs focused on design fundamentals, branding, and digital illustration. These experiences have helped me develop a professional-level skill set in layout, composition, and visual communication. I continually invest in learning to stay current with design trends and tools.</p>
         </div>
       </div>
     </div>
@@ -227,7 +245,7 @@
 
   <div class="social-links">
     <a href="https://www.facebook.com/KingJohnDesigns" target="_blank" class="social-link">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" alt="Facebook">
+      <img src="https://upload.wikedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" alt="Facebook">
       <span class="social-label">Facebook</span>
     </a>
     <a href="https://www.linkedin.com/in/rickel-john-rensulat-6bb417174" target="_blank" class="social-link">
@@ -242,6 +260,10 @@
 
   <footer>Last updated: July 2025 • © 2025 King John • Designed with ❤️</footer>
 
+  <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+    <img id="lightbox-img" src="" alt="Zoomed Image">
+  </div>
+
   <script>
     function showPage(pageId, btn) {
       const pages = ['resume', 'samples', 'ai', 'accordion'];
@@ -255,6 +277,17 @@
     function toggleAccordion(header) {
       const item = header.parentElement;
       item.classList.toggle('active');
+    }
+
+    function openLightbox(src) {
+      const lightbox = document.getElementById('lightbox');
+      const lightboxImg = document.getElementById('lightbox-img');
+      lightboxImg.src = src;
+      lightbox.classList.add('active');
+    }
+
+    function closeLightbox() {
+      document.getElementById('lightbox').classList.remove('active');
     }
   </script>
 </body>
