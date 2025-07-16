@@ -45,7 +45,7 @@
       height: auto;
       border-radius: 12px;
       cursor: grab;
-      transition: transform 0.1s ease-out;
+      transition: transform 0.3s ease;
       transform-origin: center center;
       will-change: transform;
     }
@@ -105,6 +105,19 @@
         transform: translateY(0);
       }
     }
+    .hint {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #ff4444;
+      color: #fff;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-size: 14px;
+      display: none;
+      z-index: 999;
+    }
     footer {
       margin-top: 40px;
       color: #888;
@@ -142,11 +155,14 @@
     </a>
   </div>
 
+  <div class="hint" id="hint">Boundary reached! Zooming out...</div>
+
   <footer>Last updated: July 2025 • © 2025 King John • Designed with ❤️</footer>
 
   <script>
     const resume = document.getElementById('resume');
     const resumeImage = document.getElementById('resumeImage');
+    const hint = document.getElementById('hint');
 
     const observer = new IntersectionObserver(entries => {
       entries.forEach(entry => {
@@ -162,9 +178,8 @@
     let originY = 0;
     let startX = 0;
     let startY = 0;
-    let isDragging = false;
     let isMouseDown = false;
-    const maxPan = 500;
+    const maxPan = 150;
 
     resumeImage.addEventListener('dblclick', (e) => {
       const rect = resumeImage.getBoundingClientRect();
@@ -185,6 +200,7 @@
         resumeImage.style.transformOrigin = `${percentX * 100}% ${percentY * 100}%`;
       }
 
+      resumeImage.style.transition = 'transform 0.3s ease';
       resumeImage.style.transform = `scale(${scale}) translate(${originX}px, ${originY}px)`;
     });
 
@@ -198,7 +214,6 @@
 
     resumeImage.addEventListener('mousemove', (e) => {
       if (!isMouseDown || scale === 1) return;
-      isDragging = true;
       const dx = e.clientX - startX;
       const dy = e.clientY - startY;
 
@@ -213,19 +228,24 @@
         originX = 0;
         originY = 0;
         resumeImage.style.transformOrigin = 'center center';
+        showHint();
       }
 
-      resumeImage.style.transition = 'transform 0.1s ease-out';
+      resumeImage.style.transition = 'transform 0.3s ease';
       resumeImage.style.transform = `scale(${scale}) translate(${originX}px, ${originY}px)`;
     });
 
     document.addEventListener('mouseup', () => {
-      if (isMouseDown) {
-        isMouseDown = false;
-        isDragging = false;
-        resumeImage.style.cursor = 'grab';
-      }
+      isMouseDown = false;
+      resumeImage.style.cursor = 'grab';
     });
+
+    function showHint() {
+      hint.style.display = 'block';
+      setTimeout(() => {
+        hint.style.display = 'none';
+      }, 1500);
+    }
   </script>
 </body>
 </html>
