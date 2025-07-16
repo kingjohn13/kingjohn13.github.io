@@ -23,12 +23,25 @@
       color: #ccc;
       font-weight: 600;
     }
-    img {
-      max-width: 90%;
-      height: auto;
+    .resume-container {
+      display: inline-block;
+      width: 210mm; /* A4 width */
+      max-width: 100%;
       box-shadow: 0 0 20px rgba(255,255,255,0.08);
       border-radius: 12px;
       margin-top: 20px;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 1s ease, transform 1s ease;
+    }
+    .resume-container.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .resume-container img {
+      width: 100%;
+      height: auto;
+      border-radius: 12px;
     }
     .download-btn {
       display: inline-block;
@@ -96,7 +109,9 @@
     </p>
   </div>
 
-  <img src="resume.png" alt="Resume">
+  <div class="resume-container" id="resume">
+    <img src="resume.png" alt="Resume">
+  </div>
 
   <a href="resume.png" download class="download-btn">Download Resume</a>
 
@@ -116,5 +131,18 @@
   </div>
 
   <footer>Last updated: July 2025 • © 2025 King John • Designed with ❤️</footer>
+
+  <script>
+    const resume = document.getElementById('resume');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          resume.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.5 });
+
+    observer.observe(resume);
+  </script>
 </body>
 </html>
