@@ -23,7 +23,7 @@
       color: #ccc;
       font-weight: 600;
     }
-    .resume-container, .samples-container, .ai-container {
+    .resume-container, .samples-container, .ai-container, .accordion-container {
       display: none;
       width: 210mm;
       max-width: 100%;
@@ -36,8 +36,8 @@
       transform: translateY(20px);
       transition: opacity 0.5s ease, transform 0.5s ease;
     }
-    .resume-container.visible, .samples-container.visible, .ai-container.visible {
-      display: inline-block;
+    .resume-container.visible, .samples-container.visible, .ai-container.visible, .accordion-container.visible {
+      display: block;
       opacity: 1;
       transform: translateY(0);
     }
@@ -71,6 +71,39 @@
     }
     .nav-btn.active {
       background-color: #0a84ff;
+    }
+    .accordion {
+      text-align: left;
+      padding: 10px;
+    }
+    .accordion-item {
+      margin-bottom: 10px;
+      border-radius: 8px;
+      background-color: #1f1f1f;
+      overflow: hidden;
+    }
+    .accordion-header {
+      background-color: #2a2a2a;
+      color: #fff;
+      width: 100%;
+      text-align: left;
+      padding: 12px 16px;
+      font-size: 18px;
+      cursor: pointer;
+      border: none;
+      outline: none;
+    }
+    .accordion-content {
+      max-height: 0;
+      overflow: hidden;
+      padding: 0 16px;
+      background-color: #222;
+      color: #ccc;
+      transition: max-height 0.3s ease, padding 0.3s ease;
+    }
+    .accordion-item.active .accordion-content {
+      padding: 16px;
+      max-height: 300px;
     }
     .download-container {
       display: flex;
@@ -122,31 +155,6 @@
       font-size: 14px;
       color: #aaa;
     }
-    .arrow-btn {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      background: #0a84ff;
-      border: none;
-      color: white;
-      font-size: 28px;
-      font-weight: bold;
-      cursor: pointer;
-      padding: 10px 14px;
-      border-radius: 10px;
-      z-index: 1;
-      box-shadow: 0 0 6px rgba(0, 0, 0, 0.3);
-      transition: background-color 0.3s ease;
-    }
-    .arrow-btn:hover {
-      background-color: #0072e0;
-    }
-    .arrow-left {
-      left: 10px;
-    }
-    .arrow-right {
-      right: 10px;
-    }
     footer {
       margin-top: 40px;
       color: #888;
@@ -171,6 +179,7 @@
     <button class="nav-btn active" onclick="showPage('resume', this)">Resume</button>
     <button class="nav-btn" onclick="showPage('samples', this)">Custom Designs</button>
     <button class="nav-btn" onclick="showPage('ai', this)">AI Generated Designs</button>
+    <button class="nav-btn" onclick="showPage('accordion', this)">Interactive Resume</button>
   </div>
 
   <div class="resume-container visible" id="resume">
@@ -178,15 +187,34 @@
   </div>
 
   <div class="samples-container" id="samples">
-    <button class="arrow-btn arrow-left" onclick="prevSample()">❮</button>
-    <img src="sample1.png" alt="Design Sample" id="sampleImage">
-    <button class="arrow-btn arrow-right" onclick="nextSample()">❯</button>
+    <img src="sample1.png" alt="Design Sample">
   </div>
 
   <div class="ai-container" id="ai">
-    <button class="arrow-btn arrow-left" onclick="prevAISample()">❮</button>
-    <img src="AIsamples1.png" alt="AI Sample" id="aiSampleImage">
-    <button class="arrow-btn arrow-right" onclick="nextAISample()">❯</button>
+    <img src="AIsamples1.png" alt="AI Sample">
+  </div>
+
+  <div class="accordion-container" id="accordion">
+    <div class="accordion">
+      <div class="accordion-item">
+        <button class="accordion-header" onclick="toggleAccordion(this)">Experience</button>
+        <div class="accordion-content">
+          <p>6+ years working with European clients on shirt designs, branding, product identity, and marketing visuals for both print and digital platforms.</p>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <button class="accordion-header" onclick="toggleAccordion(this)">Skills</button>
+        <div class="accordion-content">
+          <p>Expert in Adobe Photoshop and Illustrator. Proficient in AI art tools including Midjourney, DALL·E, and Ideogram. Strong typography, layout, and apparel mockup experience.</p>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <button class="accordion-header" onclick="toggleAccordion(this)">Education</button>
+        <div class="accordion-content">
+          <p>Bachelor’s Degree in Graphic Design or equivalent training and professional experience.</p>
+        </div>
+      </div>
+    </div>
   </div>
 
   <div class="download-container">
@@ -208,70 +236,21 @@
     </a>
   </div>
 
-  <footer>Last updated: July 2025 • © 2025 MadGrapix • Designed with ❤️</footer>
+  <footer>Last updated: July 2025 • © 2025 King John • Designed with ❤️</footer>
 
   <script>
-    const resume = document.getElementById('resume');
-    const samples = document.getElementById('samples');
-    const ai = document.getElementById('ai');
-    const resumeImage = document.getElementById('resumeImage');
-    const sampleImage = document.getElementById('sampleImage');
-    const aiSampleImage = document.getElementById('aiSampleImage');
-
-    let currentSample = 1;
-    const totalSamples = 10;
-    let currentAISample = 1;
-    const totalAISamples = 10;
-
     function showPage(pageId, btn) {
-      resume.classList.remove('visible');
-      samples.classList.remove('visible');
-      ai.classList.remove('visible');
+      const pages = ['resume', 'samples', 'ai', 'accordion'];
+      pages.forEach(id => document.getElementById(id).classList.remove('visible'));
       document.getElementById(pageId).classList.add('visible');
 
       document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
     }
 
-    resumeImage.addEventListener('dblclick', (e) => {
-      const rect = resumeImage.getBoundingClientRect();
-      const offsetX = e.clientX - rect.left;
-      const offsetY = e.clientY - rect.top;
-      const percentX = offsetX / rect.width;
-      const percentY = offsetY / rect.height;
-
-      if (resumeImage.style.transform.includes('scale(2)')) {
-        resumeImage.style.transform = 'scale(1)';
-        resumeImage.style.transformOrigin = 'center center';
-      } else {
-        resumeImage.style.transformOrigin = `${percentX * 100}% ${percentY * 100}%`;
-        resumeImage.style.transform = 'scale(2)';
-      }
-    });
-
-    function nextSample() {
-      if (currentSample < totalSamples) {
-        currentSample++;
-        sampleImage.src = `sample${currentSample}.png`;
-      }
-    }
-    function prevSample() {
-      if (currentSample > 1) {
-        currentSample--;
-        sampleImage.src = `sample${currentSample}.png`;
-      }
-    }
-    function nextAISample() {
-      if (currentAISample < totalAISamples) {
-        currentAISample++;
-        aiSampleImage.src = `AIsamples${currentAISample}.png`;
-      }
-    }
-    function prevAISample() {
-      if (currentAISample > 1) {
-        currentAISample--;
-        aiSampleImage.src = `AIsamples${currentAISample}.png`;
-      }
+    function toggleAccordion(header) {
+      const item = header.parentElement;
+      item.classList.toggle('active');
     }
   </script>
 </body>
