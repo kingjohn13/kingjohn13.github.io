@@ -23,7 +23,7 @@
       color: #ccc;
       font-weight: 600;
     }
-    .resume-container, .samples-container, .ai-container, .accordion-container {
+    .resume-container, .samples-container, .ai-container {
       display: none;
       width: 210mm;
       max-width: 100%;
@@ -36,8 +36,8 @@
       transform: translateY(20px);
       transition: opacity 0.5s ease, transform 0.5s ease;
     }
-    .resume-container.visible, .samples-container.visible, .ai-container.visible, .accordion-container.visible {
-      display: block;
+    .resume-container.visible, .samples-container.visible, .ai-container.visible {
+      display: inline-block;
       opacity: 1;
       transform: translateY(0);
     }
@@ -45,6 +45,8 @@
       width: 100%;
       height: auto;
       border-radius: 12px;
+      transition: transform 0.3s ease;
+      transform-origin: center center;
     }
     .navigation {
       display: flex;
@@ -69,39 +71,6 @@
     }
     .nav-btn.active {
       background-color: #0a84ff;
-    }
-    .accordion {
-      text-align: left;
-      padding: 10px;
-    }
-    .accordion-item {
-      margin-bottom: 10px;
-      border-radius: 8px;
-      background-color: #1f1f1f;
-      overflow: hidden;
-    }
-    .accordion-header {
-      background-color: #2a2a2a;
-      color: #fff;
-      width: 100%;
-      text-align: left;
-      padding: 12px 16px;
-      font-size: 18px;
-      cursor: pointer;
-      border: none;
-      outline: none;
-    }
-    .accordion-content {
-      max-height: 0;
-      overflow: hidden;
-      padding: 0 16px;
-      background-color: #222;
-      color: #ccc;
-      transition: max-height 0.3s ease, padding 0.3s ease;
-    }
-    .accordion-item.active .accordion-content {
-      padding: 16px;
-      max-height: 300px;
     }
     .download-container {
       display: flex;
@@ -153,6 +122,31 @@
       font-size: 14px;
       color: #aaa;
     }
+    .arrow-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: #0a84ff;
+      border: none;
+      color: white;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+      padding: 10px 14px;
+      border-radius: 10px;
+      z-index: 1;
+      box-shadow: 0 0 6px rgba(0, 0, 0, 0.3);
+      transition: background-color 0.3s ease;
+    }
+    .arrow-btn:hover {
+      background-color: #0072e0;
+    }
+    .arrow-left {
+      left: 10px;
+    }
+    .arrow-right {
+      right: 10px;
+    }
     footer {
       margin-top: 40px;
       color: #888;
@@ -177,42 +171,22 @@
     <button class="nav-btn active" onclick="showPage('resume', this)">Resume</button>
     <button class="nav-btn" onclick="showPage('samples', this)">Custom Designs</button>
     <button class="nav-btn" onclick="showPage('ai', this)">AI Generated Designs</button>
-    <button class="nav-btn" onclick="showPage('accordion', this)">Interactive Resume</button>
   </div>
 
   <div class="resume-container visible" id="resume">
-    <img src="resume.png" alt="Resume">
+    <img src="resume.png" alt="Resume" id="resumeImage">
   </div>
 
   <div class="samples-container" id="samples">
-    <img src="sample1.png" alt="Design Sample">
+    <button class="arrow-btn arrow-left" onclick="prevSample()">❮</button>
+    <img src="sample1.png" alt="Design Sample" id="sampleImage">
+    <button class="arrow-btn arrow-right" onclick="nextSample()">❯</button>
   </div>
 
   <div class="ai-container" id="ai">
-    <img src="AIsamples1.png" alt="AI Sample">
-  </div>
-
-  <div class="accordion-container" id="accordion">
-    <div class="accordion">
-      <div class="accordion-item">
-        <button class="accordion-header" onclick="toggleAccordion(this)">Experience</button>
-        <div class="accordion-content">
-          <p>I have over six years of experience working remotely with clients across Europe, particularly in Germany. My focus has been on designing high-quality t-shirt graphics tailored for various apparel niches. I’ve also contributed to branding projects, helping businesses establish strong visual identities through logos, packaging, and consistent design systems. In addition to print materials, I create marketing visuals optimized for digital platforms like social media and e-commerce. This blend of creative flexibility and cultural understanding has helped me deliver designs that resonate with diverse audiences.</p>
-        </div>
-      </div>
-      <div class="accordion-item">
-        <button class="accordion-header" onclick="toggleAccordion(this)">Skills</button>
-        <div class="accordion-content">
-          <p>I am an expert in Adobe Photoshop and Illustrator, using them daily for creating detailed, production-ready graphics. My workflow includes everything from vector illustrations to complex photo manipulations and apparel mockups. I’m also proficient in AI-powered design tools such as Midjourney, DALL·E, and Ideogram, which I use to enhance creativity and speed up concept generation. My strong grasp of typography and layout design ensures every project is visually balanced and brand-consistent. Whether it’s print or digital, I bring a polished, modern aesthetic to all of my work.</p>
-        </div>
-      </div>
-      <div class="accordion-item">
-        <button class="accordion-header" onclick="toggleAccordion(this)">Education</button>
-        <div class="accordion-content">
-          <p>I hold a Bachelor's Degree in Electronics Engineering, which has equipped me with strong problem-solving skills and technical precision. My transition into graphic design was driven by passion and a deep appreciation for visual storytelling. I have completed numerous seminars and training programs focused on design fundamentals, branding, and digital illustration. These experiences have helped me develop a professional-level skill set in layout, composition, and visual communication. I continually invest in learning to stay current with design trends and tools.</p>
-        </div>
-      </div>
-    </div>
+    <button class="arrow-btn arrow-left" onclick="prevAISample()">❮</button>
+    <img src="AIsamples1.png" alt="AI Sample" id="aiSampleImage">
+    <button class="arrow-btn arrow-right" onclick="nextAISample()">❯</button>
   </div>
 
   <div class="download-container">
@@ -229,7 +203,7 @@
       <span class="social-label">LinkedIn</span>
     </a>
     <a href="mailto:renwrite1@gmail.com" class="social-link">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Gmail_Icon.png" alt="Email">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/7/7e/Email_Icon_%282014%29.svg" alt="Email">
       <span class="social-label">Email</span>
     </a>
   </div>
@@ -237,18 +211,67 @@
   <footer>Last updated: July 2025 • © 2025 King John • Designed with ❤️</footer>
 
   <script>
+    const resume = document.getElementById('resume');
+    const samples = document.getElementById('samples');
+    const ai = document.getElementById('ai');
+    const resumeImage = document.getElementById('resumeImage');
+    const sampleImage = document.getElementById('sampleImage');
+    const aiSampleImage = document.getElementById('aiSampleImage');
+
+    let currentSample = 1;
+    const totalSamples = 10;
+    let currentAISample = 1;
+    const totalAISamples = 10;
+
     function showPage(pageId, btn) {
-      const pages = ['resume', 'samples', 'ai', 'accordion'];
-      pages.forEach(id => document.getElementById(id).classList.remove('visible'));
+      resume.classList.remove('visible');
+      samples.classList.remove('visible');
+      ai.classList.remove('visible');
       document.getElementById(pageId).classList.add('visible');
 
       document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
     }
 
-    function toggleAccordion(header) {
-      const item = header.parentElement;
-      item.classList.toggle('active');
+    resumeImage.addEventListener('dblclick', (e) => {
+      const rect = resumeImage.getBoundingClientRect();
+      const offsetX = e.clientX - rect.left;
+      const offsetY = e.clientY - rect.top;
+      const percentX = offsetX / rect.width;
+      const percentY = offsetY / rect.height;
+
+      if (resumeImage.style.transform.includes('scale(2)')) {
+        resumeImage.style.transform = 'scale(1)';
+        resumeImage.style.transformOrigin = 'center center';
+      } else {
+        resumeImage.style.transformOrigin = `${percentX * 100}% ${percentY * 100}%`;
+        resumeImage.style.transform = 'scale(2)';
+      }
+    });
+
+    function nextSample() {
+      if (currentSample < totalSamples) {
+        currentSample++;
+        sampleImage.src = `sample${currentSample}.png`;
+      }
+    }
+    function prevSample() {
+      if (currentSample > 1) {
+        currentSample--;
+        sampleImage.src = `sample${currentSample}.png`;
+      }
+    }
+    function nextAISample() {
+      if (currentAISample < totalAISamples) {
+        currentAISample++;
+        aiSampleImage.src = `AIsamples${currentAISample}.png`;
+      }
+    }
+    function prevAISample() {
+      if (currentAISample > 1) {
+        currentAISample--;
+        aiSampleImage.src = `AIsamples${currentAISample}.png`;
+      }
     }
   </script>
 </body>
