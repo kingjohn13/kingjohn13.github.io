@@ -180,13 +180,11 @@
     document.addEventListener('mousemove', (e) => {
       if (!isPanning) return;
       const containerRect = resume.getBoundingClientRect();
-      const imageRect = resumeImage.getBoundingClientRect();
-
       originX = e.clientX - startX;
       originY = e.clientY - startY;
 
-      const maxX = (imageRect.width * scale - containerRect.width) / 2;
-      const maxY = (imageRect.height * scale - containerRect.height) / 2;
+      const maxX = (containerRect.width * (scale - 1)) / 2;
+      const maxY = (containerRect.height * (scale - 1)) / 2;
 
       originX = Math.max(Math.min(originX, maxX), -maxX);
       originY = Math.max(Math.min(originY, maxY), -maxY);
