@@ -48,33 +48,39 @@
     }
     .social-links {
       margin-top: 30px;
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      flex-wrap: wrap;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeInUp 1s ease forwards;
     }
-    .social-links a {
-      display: inline-block;
-      margin: 10px;
-      padding: 10px;
-      border-radius: 10px;
-      background-color: #1e1e1e;
-      color: #fff;
+    .social-link {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
       text-decoration: none;
-      width: 50px;
-      height: 50px;
-      line-height: 30px;
-      border: 1px solid #555;
-      transition: background-color 0.3s ease, transform 0.3s ease;
-    }
-    .social-links a:hover {
-      background-color: #333;
-      transform: scale(1.1);
-    }
-    .social-links img {
-      width: 24px;
-      height: 24px;
-      vertical-align: middle;
+      color: #ccc;
       transition: transform 0.3s ease;
     }
-    .social-links a:hover img {
-      transform: scale(1.2);
+    .social-link:hover {
+      transform: scale(1.15);
+    }
+    .social-link img {
+      width: 60px;
+      height: 60px;
+      margin-bottom: 8px;
+    }
+    .social-label {
+      font-size: 14px;
+      color: #aaa;
+    }
+    @keyframes fadeInUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
     footer {
       margin-top: 40px;
@@ -95,14 +101,17 @@
   <a href="resume.png" download class="download-btn">Download Resume</a>
 
   <div class="social-links">
-    <a href="https://www.facebook.com/KingJohnDesigns" target="_blank" title="Facebook">
+    <a href="https://www.facebook.com/KingJohnDesigns" target="_blank" class="social-link">
       <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" alt="Facebook">
+      <span class="social-label">Facebook</span>
     </a>
-    <a href="https://www.linkedin.com/in/rickel-john-rensulat-6bb417174" target="_blank" title="LinkedIn">
+    <a href="https://www.linkedin.com/in/rickel-john-rensulat-6bb417174" target="_blank" class="social-link">
       <img src="https://upload.wikimedia.org/wikipedia/commons/c/ca/LinkedIn_logo_initials.png" alt="LinkedIn">
+      <span class="social-label">LinkedIn</span>
     </a>
-    <a href="mailto:renwrite1@gmail.com" title="Email">
+    <a href="mailto:renwrite1@gmail.com" class="social-link">
       <img src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Gmail_Icon.png" alt="Email">
+      <span class="social-label">Email</span>
     </a>
   </div>
 
