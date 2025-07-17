@@ -308,30 +308,25 @@
       }
     });
 
-    function nextSample() {
-      if (currentSample < totalSamples) {
-        currentSample++;
-        sampleImage.src = `sample${currentSample}.png`;
-      }
-    }
-    function prevSample() {
-      if (currentSample > 1) {
-        currentSample--;
-        sampleImage.src = `sample${currentSample}.png`;
-      }
-    }
-    function nextAISample() {
-      if (currentAISample < totalAISamples) {
-        currentAISample++;
-        aiSampleImage.src = `AIsamples${currentAISample}.png`;
-      }
-    }
-    function prevAISample() {
-      if (currentAISample > 1) {
-        currentAISample--;
-        aiSampleImage.src = `AIsamples${currentAISample}.png`;
-      }
-    }
+function nextSample() {
+  currentSample = currentSample < totalSamples ? currentSample + 1 : 1;
+  sampleImage.src = `sample${currentSample}.png`;
+}
+
+function prevSample() {
+  currentSample = currentSample > 1 ? currentSample - 1 : totalSamples;
+  sampleImage.src = `sample${currentSample}.png`;
+}
+
+function nextAISample() {
+  currentAISample = currentAISample < totalAISamples ? currentAISample + 1 : 1;
+  aiSampleImage.src = `AIsamples${currentAISample}.png`;
+}
+
+function prevAISample() {
+  currentAISample = currentAISample > 1 ? currentAISample - 1 : totalAISamples;
+  aiSampleImage.src = `AIsamples${currentAISample}.png`;
+}
 
     // Accordion behavior
     const accordionButtons = document.querySelectorAll('.accordion-btn');
